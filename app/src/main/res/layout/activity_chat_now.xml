@@ -23,7 +23,8 @@
         app:menu="@menu/activity_chat_now_drawer"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/nav_header_height"/>
+        android:layout_marginTop="80dp"
+        />
 
 
 </android.support.v4.widget.DrawerLayout>
