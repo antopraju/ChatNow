@@ -1,10 +1,17 @@
 package com.example.elson.chatnow;
 
+import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,9 +26,8 @@ public class ChatNow extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    private WifiP2pManager mManager;
-    private WifiP2pManager.Channel mChannel;
-    private BroadcastReceiver mReceiver;
+    private final int WIFI_CONNECT = 0;
+    private WifiManager mManager;
 
 
     @Override
@@ -89,22 +95,25 @@ public class ChatNow extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.connect) {
+            Intent ConnectIntent=new Intent(Settings.ACTION_WIFI_SETTINGS);
+            startActivityForResult(ConnectIntent,WIFI_CONNECT);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==WIFI_CONNECT) {
+            mManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+            if(mManager.isP2pSupported()) {
+                Log.e("Wifi","P2P supported");
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
