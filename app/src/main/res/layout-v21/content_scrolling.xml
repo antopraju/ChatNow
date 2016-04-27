@@ -20,9 +20,7 @@
         android:id="@+id/input_text"
         android:layout_marginBottom="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:foregroundTint="@color/accent_material_dark"
-        android:backgroundTint="@color/accent_material_dark" />
+        android:layout_alignParentStart="true" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -30,7 +28,5 @@
         android:id="@+id/send_button"
         android:layout_alignBottom="@+id/input_text"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_menu_send"
-        android:tint="@color/foreground_material_dark"
-        app:backgroundTint="@color/accent_material_light" />
+        android:src="@drawable/ic_menu_send" />
 </RelativeLayout>
