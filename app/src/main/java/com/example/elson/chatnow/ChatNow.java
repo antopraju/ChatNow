@@ -2,6 +2,7 @@ package com.example.elson.chatnow;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
@@ -21,11 +22,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class ChatNow extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    private final int HOTSPOT_CONNECT = 1;
     private final int WIFI_CONNECT = 0;
     private WifiManager mManager;
 
@@ -99,6 +102,14 @@ public class ChatNow extends AppCompatActivity
             Intent ConnectIntent=new Intent(Settings.ACTION_WIFI_SETTINGS);
             startActivityForResult(ConnectIntent,WIFI_CONNECT);
         }
+        else if (id == R.id.hotspot){
+            final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            ComponentName cn = new ComponentName("com.android.settings", "com.android.settings.TetherSettings");
+            intent.setComponent(cn);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivityForResult(intent,HOTSPOT_CONNECT);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -110,8 +121,14 @@ public class ChatNow extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode==WIFI_CONNECT) {
             mManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
-            if(mManager.isP2pSupported()) {
-                Log.e("Wifi","P2P supported");
+            if(!mManager.isP2pSupported()) {
+                Toast.makeText(getApplicationContext(),"Please try again!",Toast.LENGTH_SHORT);
+            }
+        }
+        else if (requestCode==HOTSPOT_CONNECT){
+            mManager=(WifiManager)getSystemService(Context.WIFI_SERVICE);
+            if(!mManager.isP2pSupported()) {
+                Toast.makeText(getApplicationContext(),"Please try again!",Toast.LENGTH_SHORT);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
